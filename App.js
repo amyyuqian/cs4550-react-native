@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView } from 'react-native';
 import FixedHeader from './elements/FixedHeader'
-import Icons from './elements/Icons'
-import Exam from './elements/Exam'
 import QuestionTypeButtonGroupChooser from './elements/QuestionTypeButtonGroupChooser'
 import QuestionTypePicker from './elements/QuestionTypePicker'
 import TrueFalseQuestionEditor from './elements/TrueFalseQuestionEditor'
@@ -14,6 +12,8 @@ import ModuleList from './components/ModuleList'
 import LessonList from './components/LessonList'
 import WidgetList from './components/WidgetList'
 import QuestionList from './components/QuestionList'
+import AssignmentList from './components/AssignmentList'
+import ExamList from './components/ExamList'
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -25,7 +25,7 @@ class Home extends React.Component {
   render() {
     return(
       <ScrollView>
-        <Button title="Courses"
+        <Button raised large title="COURSES" buttonStyle={styles.button}
                 onPress={() => this.props.navigation
                   .navigate('CourseList') } />
       </ScrollView>
@@ -42,6 +42,13 @@ const App = createStackNavigator({
   QuestionList,
   TrueFalseQuestionEditor,
   MultipleChoiceQuestionEditor,
+  AssignmentList,
+  ExamList
 });
 
+const styles = StyleSheet.create({
+  button: {
+    top: 10,
+  }
+})
 export default App;

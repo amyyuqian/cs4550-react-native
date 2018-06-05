@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {StyleSheet, View} from 'react-native'
 import {Text, ListItem, Button} from 'react-native-elements'
 
-class WidgetList extends Component {
-  static navigationOptions = {title: 'Widgets'}
+export default class AssignmentList extends Component {
+  static navigationOptions = {title: 'Assignments'}
   constructor(props) {
     super(props)
     this.state = {
@@ -54,4 +54,3 @@ const styles = StyleSheet.create({
     margin: 10,
   }
 })
-export default WidgetList
