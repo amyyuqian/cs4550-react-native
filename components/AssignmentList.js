@@ -1,50 +1,38 @@
 import React, {Component} from 'react'
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet, View, ScrollView} from 'react-native'
 import {Text, ListItem, Button} from 'react-native-elements'
+import Assignment from '../elements/Assignment'
 
 export default class AssignmentList extends Component {
   static navigationOptions = {title: 'Assignments'}
   constructor(props) {
     super(props)
     this.state = {
-      widgets: [],
       assignments: [],
-      exams: [],
       courseId: 1,
-      moduleId: 1
+      moduleId: 1,
+      lessonId: this.props.navigation.getParam("lessonId")
     }
   }
   componentDidMount() {
     const {navigation} = this.props;
-    const lessonId = navigation.getParam("lessonId")
-    fetch("http://localhost:8080/api/lesson/"+lessonId+"/widget")
-      .then(response => (response.json()))
-      .then(widgets => this.setState({widgets}))
 
-    fetch("http://localhost:8080/api/"+lessonId+"/assignment")
+    fetch("http://localhost:8080/api/lesson/"+this.state.lessonId+"/widget")
       .then(response => (response.json()))
-      .then(assignments => this.setState({assignments: assignments}))
-
-    fetch("http://localhost:8080/api/"+lessonId+"/exam")
-      .then(response => (response.json()))
-      .then(exams => this.setState({exams: exams}))
+      .then(widgets => this.setState({
+        assignments: widgets.filter(widget => widget.widgetType === "assignment")}))
   }
   render() {
     return(
-      <View style={{padding: 15}}>
-      <Button raised large title='ASSIGNMENTS' buttonStyle={styles.button}
-        onPress={() => this.props.navigation.navigate('AssignmentList')} />
-      <Button raised large title='EXAMS' buttonStyle={styles.button}
-        onPress={() => this.props.navigation.navigate('ExamList')} />
-      {this.state.widgets.map(
-        (widget, index) => (
-          <ListItem
-            onPress={() => this.props.navigation
-              .navigate("QuestionList", {examId: widget.id})}
-            key={index}
-            subtitle={widget.description}
-            title={widget.title}/>))}
-      </View>
+      <ScrollView style={{padding: 15}}>
+      <Button raised large title='CREATE' icon={{name: "add-circle"}} 
+        buttonStyle={styles.button} 
+        onPress={() => this.props.navigation.navigate('CreateAssignment', {lessonId: this.state.lessonId})}/>
+      {this.state.assignments.map(
+        (assign, index) => (
+          <Assignment key={index} assign={assign} navigation={this.props.navigation}/>))
+        }
+      </ScrollView>
     )
   }
 }

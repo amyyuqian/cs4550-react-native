@@ -11,31 +11,17 @@ class WidgetList extends Component {
       assignments: [],
       exams: [],
       courseId: 1,
-      moduleId: 1
+      moduleId: 1,
+      lessonId: this.props.navigation.getParam("lessonId"),
     }
-  }
-  componentDidMount() {
-    const {navigation} = this.props;
-    const lessonId = navigation.getParam("lessonId")
-    fetch("http://localhost:8080/api/lesson/"+lessonId+"/widget")
-      .then(response => (response.json()))
-      .then(widgets => this.setState({widgets}))
-
-    fetch("http://localhost:8080/api/"+lessonId+"/assignment")
-      .then(response => (response.json()))
-      .then(assignments => this.setState({assignments: assignments}))
-
-    fetch("http://localhost:8080/api/"+lessonId+"/exam")
-      .then(response => (response.json()))
-      .then(exams => this.setState({exams: exams}))
   }
   render() {
     return(
       <View style={{padding: 15}}>
       <Button raised large title='ASSIGNMENTS' buttonStyle={styles.button}
-        onPress={() => this.props.navigation.navigate('AssignmentList')} />
+        onPress={() => this.props.navigation.navigate('AssignmentList', {lessonId: this.state.lessonId})} />
       <Button raised large title='EXAMS' buttonStyle={styles.button}
-        onPress={() => this.props.navigation.navigate('ExamList')} />
+        onPress={() => this.props.navigation.navigate('ExamList', {lessonId: this.state.lessonId})} />
       {this.state.widgets.map(
         (widget, index) => (
           <ListItem

@@ -1,8 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView } from 'react-native';
-import FixedHeader from './elements/FixedHeader'
-import QuestionTypeButtonGroupChooser from './elements/QuestionTypeButtonGroupChooser'
-import QuestionTypePicker from './elements/QuestionTypePicker'
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import TrueFalseQuestionEditor from './elements/TrueFalseQuestionEditor'
 import MultipleChoiceQuestionEditor from './elements/MultipleChoiceQuestionEditor'
 import { createStackNavigator } from 'react-navigation'
@@ -14,6 +11,8 @@ import WidgetList from './components/WidgetList'
 import QuestionList from './components/QuestionList'
 import AssignmentList from './components/AssignmentList'
 import ExamList from './components/ExamList'
+import CreateAssignment from './components/CreateAssignment'
+import EditAssignment from './components/EditAssignment'
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -43,7 +42,9 @@ const App = createStackNavigator({
   TrueFalseQuestionEditor,
   MultipleChoiceQuestionEditor,
   AssignmentList,
-  ExamList
+  ExamList,
+  CreateAssignment,
+  EditAssignment
 });
 
 const styles = StyleSheet.create({
