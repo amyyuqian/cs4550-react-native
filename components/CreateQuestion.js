@@ -3,6 +3,7 @@ import {StyleSheet, View, ScrollView} from 'react-native'
 import {Text, ListItem, Button, FormInput, FormLabel} from 'react-native-elements'
 import QuestionTypePicker from '../elements/QuestionTypePicker'
 import MultipleChoiceQuestionEditor from '../elements/MultipleChoiceQuestionEditor'
+import EssayQuestionEditor from '../elements/EssayQuestionEditor'
 
 export default class CreateQuestion extends Component {
   static navigationOptions = {title: 'Create Question'}
@@ -30,6 +31,8 @@ export default class CreateQuestion extends Component {
           questionType={this.state.questionType}/>
         {this.state.questionType === 'multi' && 
           <MultipleChoiceQuestionEditor examId={this.state.examId} navigation={this.props.navigation}/>}
+        {this.state.questionType === 'essay' &&
+          <EssayQuestionEditor examId={this.state.examId} navigation={this.props.navigation}/>}
       </ScrollView>
     )
   }

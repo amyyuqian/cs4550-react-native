@@ -12,6 +12,27 @@ export default class Exam extends Component {
     }
   }
 
+  componentDidMount() {
+    fetch("http://localhost:8080/api/exam/" + this.props.exam.id + '/question')
+      .then(response => (response.json()))
+      .then(questions => this.setState({questions: this.mapIcons(questions)}))
+  }
+
+  mapIcons = (questions) => {
+    questions.map((question) => {
+      if (question.type === 'multi') {
+        question['icon'] = 'format-list-bulleted'
+      } else if (question.type === 'essay') {
+        question['icon'] = 'format-align-left'
+      } else if (question.type === 'blanks') {
+        question['icon'] = 'insert-comment'
+      } else {
+        question['icon'] = 'ballot'
+      }
+    })
+    return questions
+  }
+
   updateTitle = (title) => {
     this.setState({title: title})
   }
