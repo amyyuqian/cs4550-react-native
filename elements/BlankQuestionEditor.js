@@ -1,20 +1,18 @@
-import React from 'react'
-import {View} from 'react-native'
-import {Text, Button, CheckBox} from 'react-native-elements'
-import {FormLabel, FormInput, FormValidationMessage}
-  from 'react-native-elements'
+import React, {Component} from 'react'
+import {StyleSheet, View, ScrollView, TextInput} from 'react-native'
+import {Text, Button, FormLabel, FormInput} from 'react-native-elements'
 
-class TrueFalseQuestionEditor extends React.Component {
-  static navigationOptions = { title: "True False"}
+export default class BlanksQuestionEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
       title: '',
       description: '',
       points: 0,
-      isTrue: true
+      blanks: ''
     }
   }
+
   updateTitle = (title) => {
     this.setState({title: title})
   }
@@ -24,19 +22,19 @@ class TrueFalseQuestionEditor extends React.Component {
   updatePoints = (pts) => {
     this.setState({points: pts})
   }
-  updateIsTrue = () => {
-    this.setState({isTrue: !this.state.isTrue})
+  updateBlanks = (blanks) => {
+    this.setState({blanks: blanks})
   }
 
   createQuestion = () => {
-    fetch("http://localhost:8080/api/exam/"+this.props.examId+"/truefalse", {
+    fetch("http://localhost:8080/api/exam/"+this.props.examId+"/blanks", {
       method: 'POST',
       body: JSON.stringify({
         title: this.state.title,
         description: this.state.description,
         points: this.state.points,
-        isTrue: this.state.isTrue,
-        type: 'truefalse'
+        blanks: this.state.blanks,
+        type: 'blanks'
       }),
       headers: {
         'Content-Type': 'application/json'
@@ -51,9 +49,8 @@ class TrueFalseQuestionEditor extends React.Component {
       <View>
         <FormLabel>Title</FormLabel>
         <FormInput onChangeText={
-          text => this.updateTitle(text)
+          title => this.updateTitle(title)
         }/>
-
         <FormLabel>Description</FormLabel>
         <FormInput onChangeText={
           text => this.updateDesc(text)
@@ -62,16 +59,14 @@ class TrueFalseQuestionEditor extends React.Component {
         <FormInput onChangeText={
           points => this.updatePoints(points)
         }/>
-
-        <CheckBox onPress={this.updateIsTrue}
-                  checked={this.state.isTrue} title='Check to set true'/>
-
+        <FormLabel>Fill in the Blanks</FormLabel>
+        <FormInput onChangeText={
+          blanks => this.updateBlanks(blanks)
+        }/>
         <Button	raised backgroundColor="blue" title="SAVE"
           onPress={this.createQuestion}/>
-
       </View>
     )
   }
-}
 
-export default TrueFalseQuestionEditor
+}

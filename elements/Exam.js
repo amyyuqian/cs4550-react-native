@@ -27,7 +27,7 @@ export default class Exam extends Component {
       } else if (question.type === 'blanks') {
         question['icon'] = 'insert-comment'
       } else {
-        question['icon'] = 'ballot'
+        question['icon'] = 'compare-arrows'
       }
     })
     return questions
