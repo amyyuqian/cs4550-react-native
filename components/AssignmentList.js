@@ -25,13 +25,13 @@ export default class AssignmentList extends Component {
   render() {
     return(
       <ScrollView style={{padding: 15}}>
-      <Button raised large title='CREATE' icon={{name: "add-circle"}} 
-        buttonStyle={styles.button} 
-        onPress={() => this.props.navigation.navigate('CreateAssignment', {lessonId: this.state.lessonId})}/>
-      {this.state.assignments.map(
-        (assign, index) => (
-          <Assignment key={index} assign={assign} navigation={this.props.navigation}/>))
-        }
+        <Button raised large title='CREATE' icon={{name: "add-circle"}} 
+          buttonStyle={styles.button} 
+          onPress={() => this.props.navigation.navigate('CreateAssignment', {lessonId: this.state.lessonId})}/>
+        {this.state.assignments.map(
+          (assign, index) => (
+            <Assignment key={index} assign={assign} navigation={this.props.navigation}/>))
+          }
       </ScrollView>
     )
   }

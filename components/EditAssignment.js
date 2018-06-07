@@ -27,7 +27,7 @@ export default class CreateAssignment extends Component {
   }
 
   saveAssignment = () => {
-    fetch("http://localhost:8080/api/assignment" + this.state.assignId, {
+    fetch("http://localhost:8080/api/assignment/" + this.state.assignId, {
       method: 'PUT',
       body: JSON.stringify({
         title: this.state.title,

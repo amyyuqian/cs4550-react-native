@@ -1,58 +1,109 @@
 import React from 'react'
 import {View} from 'react-native'
-import {Text, Button, CheckBox} from 'react-native-elements'
+import {Text, Button} from 'react-native-elements'
 import {FormLabel, FormInput, FormValidationMessage}
   from 'react-native-elements'
+import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button'
 
 class MultipleChoiceQuestionEditor extends React.Component {
-  static navigationOptions = { title: "Multiple Choice"}
   constructor(props) {
     super(props)
     this.state = {
       title: '',
       description: '',
       points: 0,
-      options: ''
+      options: [],
+      numChoices: 0,
+      selectedChoice: 0
     }
   }
-  updateForm(newState) {
-    this.setState(newState)
+
+  createQuestion = () => {
+    fetch("http://localhost:8080/api/exam/"+this.props.examId+"/multi", {
+      method: 'POST',
+      body: JSON.stringify({
+        title: this.state.title,
+        description: this.state.description,
+        points: this.state.points,
+        options: this.state.options.join(),
+        correctOption: this.state.selectedChoice,
+        type: 'multi'
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => (response.json()))
+      .then(this.props.navigation.goBack())
   }
+
+  updateTitle = (title) => {
+    this.setState({title: title})
+  }
+  updateDesc = (desc) => {
+    this.setState({description: desc})
+  }
+  updatePoints = (pts) => {
+    this.setState({points: pts})
+  }
+
+  onSelect(index){
+    this.setState({
+      selectedChoice: index
+    })
+  }
+
+  addChoice = () => {
+    this.setState({numChoices: this.state.numChoices + 1})
+  }
+
+  updateOption = (index, text) => {
+    _options = this.state.options.slice()
+    _options[index] = text
+
+    this.setState({options: _options})
+  }
+
+  renderChoices = () => {
+    let choices = []
+    for (let i = 0; i < this.state.numChoices; i++) {
+
+      choices.push(
+        <RadioButton key={i}>
+          <FormInput onChangeText={
+            text => this.updateOption(i, text)
+          }/>
+        </RadioButton>
+      )
+    }
+    return choices
+  }
+
   render() {
     return(
       <View>
         <FormLabel>Title</FormLabel>
         <FormInput onChangeText={
-          text => this.updateForm({title: text})
+          title => this.updateTitle(title)
         }/>
-        <FormValidationMessage>
-          Title is required
-        </FormValidationMessage>
-
         <FormLabel>Description</FormLabel>
         <FormInput onChangeText={
-          text => this.updateForm({description: text})
+          text => this.updateDesc(text)
         }/>
-        <FormValidationMessage>
-          Description is required
-        </FormValidationMessage>
-
-        <FormLabel>Choices</FormLabel>
+        <FormLabel>Points</FormLabel>
         <FormInput onChangeText={
-          text => this.updateForm({options: text})
+          points => this.updatePoints(points)
         }/>
 
-        <Button	backgroundColor="green"
-                 color="white"
-                 title="Save"/>
-        <Button	backgroundColor="red"
-                 color="white"
-                 title="Cancel"/>
-
-        <Text h3>Preview</Text>
-        <Text h2>{this.state.title}</Text>
-        <Text>{this.state.description}</Text>
-
+        <RadioGroup
+          onSelect = {(index, value) => this.onSelect(index)}
+        >
+          {this.renderChoices()}
+        </RadioGroup>
+        <Button raised title='ADD CHOICE' backgroundColor='green'
+            onPress={this.addChoice}/>
+        <Button	raised backgroundColor="blue" title="SAVE"
+          onPress={this.createQuestion}/>
       </View>
     )
   }
