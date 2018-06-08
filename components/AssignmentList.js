@@ -15,13 +15,20 @@ export default class AssignmentList extends Component {
     }
   }
   componentDidMount() {
-    const {navigation} = this.props;
-
-    fetch("http://localhost:8080/api/lesson/"+this.state.lessonId+"/widget")
-      .then(response => (response.json()))
-      .then(widgets => this.setState({
-        assignments: widgets.filter(widget => widget.widgetType === "assignment")}))
+    this.getAssignments()
   }
+
+  getAssignments = () => {
+    fetch("http://localhost:8080/api/lesson/"+this.state.lessonId+"/widget")
+    .then(response => (response.json()))
+    .then(widgets => this.setState({
+      assignments: widgets.filter(widget => widget.widgetType === "assignment")}))
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.getAssignments()
+  }
+
   render() {
     return(
       <ScrollView style={{padding: 15}}>

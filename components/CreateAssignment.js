@@ -41,7 +41,7 @@ export default class CreateAssignment extends Component {
       },
     })
       .then(response => (response.json()))
-      .then(this.props.navigation.navigate('AssignmentList'))
+      .then(assign => this.props.navigation.navigate('AssignmentList', {assignId: assign.id}))
   }
 
   render() {

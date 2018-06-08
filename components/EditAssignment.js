@@ -39,7 +39,14 @@ export default class CreateAssignment extends Component {
       },
     })
       .then(response => (response.json()))
-      .then(this.props.navigation.navigate('AssignmentList'))
+      .then(assign => this.props.navigation.navigate('AssignmentList', {updatedId: this.state.assignId}))
+  }
+
+  deleteAssignment = () => {
+    fetch("http://localhost:8080/api/assignment/" + this.state.assignId, {
+      method: 'DELETE',
+    })
+      .then(() => this.props.navigation.navigate('AssignmentList', {deletedId: this.state.assignId}))
   }
 
   render() {
@@ -53,6 +60,8 @@ export default class CreateAssignment extends Component {
         <FormInput onChangeText={pts => this.updatePoints(pts)}>{this.state.points}</FormInput>
         <Button raised title='SAVE' backgroundColor='blue'
           onPress={this.saveAssignment} />
+        <Button raised title='DELETE' backgroundColor='red'
+          onPress={this.deleteAssignment} />
       </View>
     )
   }
