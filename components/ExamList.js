@@ -15,7 +15,10 @@ export default class ExamList extends Component {
     }
   }
   componentDidMount() {
-    const {navigation} = this.props;
+    this.getExams()
+  }
+
+  getExams = () => {
     fetch("http://localhost:8080/api/lesson/"+this.state.lessonId+"/widget")
       .then(response => (response.json()))
       .then(widgets => this.setState({
@@ -23,7 +26,9 @@ export default class ExamList extends Component {
       }))
   }
 
-
+  componentWillReceiveProps(newProps) {
+    this.getExams()
+  }
   render() {
     return(
       <ScrollView style={{padding: 15}}>

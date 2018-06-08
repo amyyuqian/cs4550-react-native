@@ -13,6 +13,10 @@ export default class Exam extends Component {
   }
 
   componentDidMount() {
+    this.getExams()
+  }
+
+  getExams = () => {
     fetch("http://localhost:8080/api/exam/" + this.props.exam.id + '/question')
       .then(response => (response.json()))
       .then(questions => this.setState({questions: this.mapIcons(questions)}))
@@ -55,6 +59,14 @@ export default class Exam extends Component {
       .then(response => (response.json()))
   }
 
+  deleteExam = () => {
+    fetch("http://localhost:8080/api/exam/" + this.props.exam.id, {
+      method: 'DELETE',
+    })
+      .then(response => (response.json()))
+      .then(() => this.getExams)
+  }
+
   render() {
     return(
       <View style={styles.container}>
@@ -68,13 +80,27 @@ export default class Exam extends Component {
               key={index}
               leftIcon={{name: question.icon}}
               title={question.title}
-              rightIcon={{name: 'chevron-right'}}/>
+              rightIcon={{name: 'chevron-right'}}
+              onPress={() => this.props.navigation.navigate('EditQuestion', 
+              {
+                id: question.id,
+                title: question.title,
+                description: question.description,
+                points: question.points,
+                options: question.options,
+                correctOption: question.correctOption,
+                type: question.type,
+                isTrue: question.isTrue,
+                blanks: question.blanks
+              })}/>
           ))}
         </View>
         <Button raised title='ADD QUESTION' backgroundColor='green' 
           onPress={() => this.props.navigation.navigate('CreateQuestion', {examId: this.props.exam.id})}/>
         <Button raised title='SAVE CHANGES' backgroundColor='blue' 
           onPress={this.updateExam}/>
+        <Button raised title='DELETE' backgroundColor='red' 
+          onPress={this.deleteExam}/>
       </View>
     )
   }

@@ -14,16 +14,11 @@ export default class CreateQuestion extends Component {
     this.state = {
       questionType: 'multi',
       examId: this.props.navigation.getParam("examId"),
-      question: {}
     }
   }
 
   updateQuestionType = (type) => {
     this.setState({questionType: type})
-  }
-
-  createQuestion = () => {
-
   }
 
   render() {

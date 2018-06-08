@@ -15,6 +15,7 @@ import CreateAssignment from './components/CreateAssignment'
 import EditAssignment from './components/EditAssignment'
 import CreateExam from './components/CreateExam'
 import CreateQuestion from './components/CreateQuestion'
+import EditQuestion from './components/EditQuestion'
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -48,7 +49,8 @@ const App = createStackNavigator({
   CreateAssignment,
   EditAssignment,
   CreateExam,
-  CreateQuestion
+  CreateQuestion,
+  EditQuestion
 });
 
 const styles = StyleSheet.create({

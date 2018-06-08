@@ -35,7 +35,7 @@ export default class CreateExam extends Component {
       },
     })
       .then(response => (response.json()))
-      .then(this.props.navigation.navigate('ExamList'))
+      .then(exam => this.props.navigation.navigate('ExamList', {examId: exam.id}))
   }
 
   render() {

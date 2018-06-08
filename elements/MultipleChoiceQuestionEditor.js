@@ -37,6 +37,24 @@ class MultipleChoiceQuestionEditor extends React.Component {
       .then(this.props.navigation.goBack())
   }
 
+  updateQuestion = () => {
+    fetch("http://localhost:8080/api/multi/" + this.props.question.id, {
+      method: 'PUT',
+      body: JSON.stringify({
+        title: this.state.title,
+        description: this.state.description,
+        points: this.state.points,
+        options: this.state.options.join(),
+        correctOption: this.state.selectedChoice,
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => (response.json()))
+      .then(this.props.navigation.goBack())
+  }
+
   updateTitle = (title) => {
     this.setState({title: title})
   }
@@ -66,16 +84,30 @@ class MultipleChoiceQuestionEditor extends React.Component {
 
   renderChoices = () => {
     let choices = []
-    for (let i = 0; i < this.state.numChoices; i++) {
-
+    if (this.props.editMode) {
+      let splitChoices = this.props.question.options.split(',')
+      let numChoices = splitChoices.length
+      for (let i = 0; i < numChoices; i++) {
+        choices.push(
+          <RadioButton key={i}>
+            <FormInput onChangeText={
+              text => this.updateOption(i, text)
+            }>{splitChoices[i]}</FormInput>
+          </RadioButton>
+        )
+        }
+    } else {
+      for (let i = 0; i < this.state.numChoices; i++) {
       choices.push(
         <RadioButton key={i}>
           <FormInput onChangeText={
             text => this.updateOption(i, text)
-          }/>
+          } />
         </RadioButton>
       )
+      }
     }
+    
     return choices
   }
 
@@ -85,25 +117,26 @@ class MultipleChoiceQuestionEditor extends React.Component {
         <FormLabel>Title</FormLabel>
         <FormInput onChangeText={
           title => this.updateTitle(title)
-        }/>
+        }>{this.props.editMode ? this.props.question.title : this.state.title}</FormInput>
         <FormLabel>Description</FormLabel>
         <FormInput onChangeText={
           text => this.updateDesc(text)
-        }/>
+        }>{this.props.editMode ? this.props.question.description : this.state.description}</FormInput>
         <FormLabel>Points</FormLabel>
         <FormInput onChangeText={
           points => this.updatePoints(points)
-        }/>
+        }>{this.props.editMode ? this.props.question.points : this.state.points}</FormInput>
 
         <RadioGroup
           onSelect = {(index, value) => this.onSelect(index)}
+          selectedIndex={this.props.editMode ? this.props.question.correctOption : this.state.selectedChoice}
         >
           {this.renderChoices()}
         </RadioGroup>
         <Button raised title='ADD CHOICE' backgroundColor='green'
             onPress={this.addChoice}/>
-        <Button	raised backgroundColor="blue" title="SAVE"
-          onPress={this.createQuestion}/>
+        <Button raised backgroundColor="blue" title="SAVE"
+          onPress={this.props.editMode ? this.updateQuestion : this.createQuestion}/>
       </View>
     )
   }
