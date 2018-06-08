@@ -13,10 +13,10 @@ export default class Exam extends Component {
   }
 
   componentDidMount() {
-    this.getExams()
+    this.getQuestions()
   }
 
-  getExams = () => {
+  getQuestions = () => {
     fetch("http://localhost:8080/api/exam/" + this.props.exam.id + '/question')
       .then(response => (response.json()))
       .then(questions => this.setState({questions: this.mapIcons(questions)}))
@@ -63,8 +63,6 @@ export default class Exam extends Component {
     fetch("http://localhost:8080/api/exam/" + this.props.exam.id, {
       method: 'DELETE',
     })
-      .then(response => (response.json()))
-      .then(() => this.getExams)
   }
 
   render() {

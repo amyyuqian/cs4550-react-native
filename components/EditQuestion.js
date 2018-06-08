@@ -32,7 +32,7 @@ export default class EditQuestion extends Component {
       method: 'DELETE',
     })
       .then(response => (response.json()))
-      .then(this.props.navigation.goBack())
+      .then(this.props.navigation.navigate('ExamList', {deletedQuestion: this.state.question.id}))
   }
 
   render() {

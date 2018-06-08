@@ -38,7 +38,7 @@ export default class ExamList extends Component {
         {this.state.exams.map(
           (exam, index) => (
             <Exam key={index} exam={exam} navigation={this.props.navigation}
-              />))
+              getExams={this.getExams}/>))
           }
       </ScrollView>
     )
